@@ -1,10 +1,10 @@
 /**
- * Created by Ihar_Cheliadzinski on 12/13/2015.
+ * Created by Ihar_Cheliadzinski on 12/14/2015.
  */
 "use strict";
 
 module.exports = function (sequelize, DataTypes) {
-    var Category = sequelize.define("Category", {
+    var Level = sequelize.define("Level", {
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
@@ -18,10 +18,10 @@ module.exports = function (sequelize, DataTypes) {
     }, {
         classMethods: {
             associate: function (models) {
-                Category.hasMany(models.Position);
+                Level.hasMany(models.PositionsLevel);
             }
         }
     });
 
-    return Category;
+    return Level;
 };

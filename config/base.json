@@ -1,6 +1,17 @@
 {
   "mysql": {
-    "host": "192.168.56.101",
-    "port": 3306
+    "database": "inspired_actions_test",
+    "username": "root",
+    "password": "viacom",
+    "config": {
+      "host": "192.168.56.101",
+      "port": 3306,
+      "dialect": "mysql",
+      "pool": {
+        "max": 5,
+        "min": 0,
+        "idle": 10000
+      }
+    }
   }
 }
