@@ -1,0 +1,22 @@
+extends layout
+
+block login
+    div.ui.middle.aligned.center.aligned.grid
+        div.column
+            h2.ui.violet.image.header
+                img(src='/images/logo.png').image
+                div.content Log-in to your account
+            form(action='/login', method='post')#loginForm.ui.large.form
+                div.ui.stacked.segment
+                    div.field
+                        div.ui.left.icon.input
+                            i.mail.icon
+                            input(type='text', name='email', placeholder='E-mail address')
+                    div.field
+                        div.ui.left.icon.input
+                            i.lock.icon
+                            input(type='password', name='password', placeholder='Password')
+                    #login.ui.fluid.large.violet.submit.button Login
+                div.ui.error.message
+            div.ui.message New to us?
+                a(href='/sign-up')  Sign Up

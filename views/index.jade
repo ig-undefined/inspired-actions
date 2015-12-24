@@ -1,5 +1,7 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+    if (!isAuthenticated)
+        a(href='/login') Log In
+    else
+        span #{user.email}

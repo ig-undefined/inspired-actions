@@ -13,14 +13,18 @@ module.exports = function (sequelize, DataTypes) {
         },
         name: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         surname: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        email: {
             type: DataTypes.STRING,
             allowNull: false
         },
         password: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             allowNull: false
         }
     }, {
@@ -31,7 +35,7 @@ module.exports = function (sequelize, DataTypes) {
                 User.belongsTo(models.PositionsLevel, {
                     onDelete: "CASCADE",
                     foreignKey: {
-                        allowNull: false
+                        allowNull: true
                     }
                 });
             }

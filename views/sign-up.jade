@@ -1,0 +1,32 @@
+extends layout
+
+block sign-up
+    div.ui.middle.aligned.center.aligned.grid
+        div.column
+            h2.ui.violet.image.header
+                img(src='/images/logo.png').image
+                div.content Sign Up to Inspired Actions
+            form(action='/sign-up', method='post')#signUpForm.ui.large.form
+                div.ui.stacked.segment
+                    div.field
+                        div.ui.left.icon.input
+                            i.user.icon
+                            input(type='text', name='name', placeholder='Your Name')
+                    div.field
+                        div.ui.left.icon.input
+                            i.user.icon
+                            input(type='text', name='surname', placeholder='Your Surname')
+                    div.field
+                        div.ui.left.icon.input
+                            i.mail.icon
+                            input(type='text', name='email', placeholder='E-mail address')
+                    div.field
+                        div.ui.left.icon.input
+                            i.lock.icon
+                            input(type='password', name='password', placeholder='Password')
+                    div.field
+                        div.ui.left.icon.input
+                            i.protect.icon
+                            input(type='password', name='repeat-password', placeholder='Repeat Password')
+                    div#signUp.ui.fluid.large.violet.submit.button Sign Up
+                div.ui.error.message
