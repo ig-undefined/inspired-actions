@@ -8,3 +8,7 @@ body > .grid {
 .column {
     max-width: 450px;
 }
+.masthead h1.ui.header {
+    margin-top: 2em;
+    font-size: 4em;
+}

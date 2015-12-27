@@ -56,7 +56,7 @@ router.post('/login', passport.authenticate('local', { failureRedirect: '/login'
 });
 router.get('/logout', function (req, res, next) {
     req.session.destroy();
-    res.send('logged out');
+    res.redirect('/');
 });
 router.get('/sign-up', function (req, res, next) {
     if (req.isAuthenticated()) {
@@ -67,9 +67,12 @@ router.get('/sign-up', function (req, res, next) {
     });
 });
 router.post('/sign-up', function (req, res, next) {
+
     models.User.findOne({ where: { email: req.body.email } }).then(function (user) {
         if (user !== null) {
-            res.redirect('/login');
+            return res.render('sign-up', {
+                error: "User exists"
+            });
         } else {
             return models.User.create({ email: req.body.email, name: req.body.name, surname: req.body.surname, password: encryptor(req.body.password) }).then(function () {
                 res.redirect('/');

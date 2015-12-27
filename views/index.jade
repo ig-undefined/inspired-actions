@@ -1,7 +1,9 @@
 extends layout
 
 block content
-    if (!isAuthenticated)
-        a(href='/login') Log In
-    else
-        span #{user.email}
+    div(style="border: none !important;").ui.vertical.masthead.center.aligned.segment
+        div.ui.text.container
+            if (!isAuthenticated)
+                h1.ui.violet.header Inspired Actions
+            else
+                h1.ui.violet.header Welcome, #{user.name} #{user.surname}

@@ -1,0 +1,15 @@
+block header
+    div.ui.large.top.fixed.menu.transition.visible
+        div.ui.container
+            a(href="/").active.item Home
+            a(href="/all-courses").item Courses
+            div.right.menu
+                if (!isAuthenticated)
+                    div.item
+                        a(href="/login").ui.button Log in
+                    div.item
+                        a(href="/sign-up").ui.primary.button Sign Up
+                else
+                    a(href="/my-page").item #{user.name} #{user.surname}
+                    div.item
+                        a(href="/logout").ui.button Log Out
