@@ -6,6 +6,14 @@ var passportHttp = require('passport-http');
 var models = require('../data-access-layer/models');
 var encryptor = require('../lib/helpers/encryptor');
 
+function loggedIn(req, res, next) {
+    if (req.user) {
+        next();
+    } else {
+        res.redirect('/login');
+    }
+}
+
 /* GET home page. */
 passport.use(new passportLocal.Strategy({
     usernameField: 'email',
@@ -88,6 +96,29 @@ router.post('/query', function (req, res, next) {
 
     models.sequelize.query(query).then(function (data) {
         res.json(data);
+    });
+});
+router.get('/my-page', loggedIn, function (req, res, next) {
+    res.render('my-page', {
+        isAuthenticated: req.isAuthenticated(),
+        user: req.user
+    });
+});
+router.post('/update-profile', function (req, res, next) {
+    var id = req.body.id
+        , name = req.body.name
+        , surname = req.body.surname
+        , email = req.body.email;
+    models.User.update({
+        name: name,
+        surname: surname,
+        email: email
+    }, {
+        where: { id: id }
+    }).then(function () {
+        res.redirect('/');
+    }).catch(function (err) {
+        res.send(err.message);
     });
 });
 

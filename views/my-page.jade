@@ -1,0 +1,20 @@
+extends layout
+
+block my-page
+    div.ui.masthead.vertical.segment
+        div.ui.container
+            h2.ui.dividing.header Profile
+            #settings
+                h4.ui.header Account Settings
+                form(action="/update-profile", method="post")#accountSettings.ui.form
+                    input(type="hidden", name="id", value="#{user.id}")
+                    div.seven.wide.field
+                        label Name
+                        input(type="text", name="name", placeholder="Name", value="#{user.name}")
+                    div.seven.wide.field
+                        label Surname
+                        input(type="text", name="surname", placeholder="Name", value="#{user.surname}")
+                    div.seven.wide.field
+                        label E-mail
+                        input(type="text", name="email", placeholder="E-mail", value="#{user.email}")
+                    div#changeAccountSettings.ui.button Change
