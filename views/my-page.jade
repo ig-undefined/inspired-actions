@@ -38,3 +38,21 @@ block my-page
                         label Position
                         select(name="position")#targetPositions.ui.dropdown
                     div#changeTargetPosition.ui.button Change
+        div(style="margin-top: 20px;").ui.container
+            h2.ui.dividing.header My Skills
+            #skills
+                h4.ui.header Your Target Position
+                form(action="/add-skill", method="post")#skillsForm.ui.form
+                    div.seven.wide.field
+                        label New Skill
+                        input(type="text", name="skill", placeholder="New skill")#newSkillName
+                    div#addNewSkill.ui.button Add
+                div#skillsList.ui.middle.aligned.divided.list
+                    each skill in skills
+                        div.item
+                            div.right.floated.content
+                                div.ui.button.remove-skill Remove
+                            div(style="display:none;")#skillLevelID #{skill.levelID}
+                            div.content
+                                div.header #{skill.name}
+                                | #{skill.level}

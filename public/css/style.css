@@ -1,5 +1,7 @@
 body {
     background-image: url("/images/background.jpg") !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
     background-size: cover !important;
 }
 body > .grid {

@@ -20,10 +20,7 @@ module.exports = function (sequelize, DataTypes) {
             associate: function (models) {
                 Skill.hasMany(models.SkillsLevel);
                 Skill.belongsTo(models.Group, {
-                    onDelete: "CASCADE",
-                    foreignKey: {
-                        allowNull: false
-                    }
+                    onDelete: "CASCADE"
                 });
             }
         }

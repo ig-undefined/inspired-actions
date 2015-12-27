@@ -101,12 +101,30 @@ router.post('/query', function (req, res, next) {
 router.get('/my-page', loggedIn, function (req, res, next) {
     return models.Category.findAll().then(function (categories) {
         return models.Level.findAll().then(function (levels) {
-            return res.render('my-page', {
-                title: 'My Profile',
-                isAuthenticated: req.isAuthenticated(),
-                user: req.user,
-                categories: categories,
-                levels: levels
+            return models.UsersSkill.findAll({
+                include: [
+                    { model: models.User, where: { id: req.user.id } },
+                    { model: models.SkillsLevel, include: [
+                        { model: models.Skill },
+                        { model: models.SkillLevel }
+                    ] }
+                ]}).then(function (results) {
+                    var skills = [];
+                    for (var i in results) {
+                        var skill = {};
+                        skill['name'] = results[i]['SkillsLevel']['Skill']['name'];
+                        skill['level'] = results[i]['SkillsLevel']['SkillLevel']['name'];
+                        skill['levelID'] = results[i]['SkillsLevel']['SkillLevel']['id'];
+                        skills.push(skill);
+                    }
+                    return res.render('my-page', {
+                        title: 'My Profile',
+                        isAuthenticated: req.isAuthenticated(),
+                        user: req.user,
+                        categories: categories,
+                        levels: levels,
+                        skills: skills
+                    });
             });
         });
     });
@@ -123,16 +141,23 @@ router.post('/update-profile-settings', function (req, res, next) {
     }, {
         where: { id: id }
     }).then(function () {
-        res.json({ result: "Account settings updated" });
+        return res.json({ result: "Account settings updated" });
     }).catch(function (err) {
-        res.send(err.message);
+        return res.send(err.message);
     });
 });
 router.post('/update-profile-target-position', function (req, res, next) {
     return models.PositionsLevel
         .findOrCreate({ where: { LevelId: req.body.level, PositionId: req.body.position } })
         .then(function (value) {
-            return res.json({ result: "Target Updated" });
+            return models.User.update({
+                PositionsLevelId: value[0].id
+            }, {
+                where: { id: req.user.id }
+            })
+                .then(function () {
+                    return res.json({ result: "Target Updated" });
+                });
         });
 });
 router.get('/get-positions/:categoryId', function (req, res, next) {
@@ -140,6 +165,33 @@ router.get('/get-positions/:categoryId', function (req, res, next) {
 
     return models.Position.findAll({ where: { categoryId: categoryId } }).then(function (values) {
         return res.json(values);
+    });
+});
+router.post('/add-new-skill', function (req, res, next) {
+    var newSkill = req.body.skill;
+
+    return models.Skill.create({ name: newSkill, GroupId: 1 }).then(function (skill) {
+        return models.SkillsLevel.create({ SkillId: skill.id, SkillLevelId: 1 }).then(function (skillLevel) {
+            return models.UsersSkill.create({ UserId: req.user.id, SkillsLevelId: skillLevel.id }).then(function () {
+                return res.json({
+                    name: skill.name,
+                    level: 'Novice'
+                });
+            })
+        });
+    });
+});
+router.post('/remove-skill', function (req, res, next) {
+    var skill = req.body.skill
+        , skillLevel = req.body.skillLevel;
+
+    return models.Skill.findOne({ where: { name: skill } }).then(function (skill) {
+        return models.SkillsLevel.findOne({ SkillId: skill.id, SkillLevelId: skillLevel }).then(function (skillsLevel) {
+            return models.UsersSkill.findOne({ UserId: req.user.id, SkillsLevelId: skillsLevel.id }).then(function (value) {
+                value.destroy();
+                return res.json({Success: true});
+            });
+        });
     });
 });
 
