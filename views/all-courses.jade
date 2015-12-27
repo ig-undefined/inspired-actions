@@ -1,0 +1,18 @@
+extends layout
+
+block all-courses
+    div.ui.masthead.vertical.segment
+        div.ui.container
+            h2.ui.dividing.header All Courses
+            div.ui.items
+                each course in courses
+                    div.item
+                        div.ui.small.image
+                            img(src="/images/courses.png")
+                        div.middle.aligned.content
+                            div.header #{course.name}
+                            div.description
+                                p #{course.description}
+                                a(href="#{course.link}", target="_blank", style="text-decoration:underline;color:black;") #{course.link}
+                            div.extra
+                                div.ui.right.floated.button Add

@@ -194,5 +194,14 @@ router.post('/remove-skill', function (req, res, next) {
         });
     });
 });
+router.get('/all-courses', function (req, res, next) {
+    return models.Course.findAll().then(function (courses) {
+        return res.render('all-courses', {
+            isAuthenticated: req.isAuthenticated(),
+            user: req.user,
+            courses: courses
+        });
+    });
+});
 
 module.exports = router;
