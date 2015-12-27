@@ -6,7 +6,7 @@ block my-page
             h2.ui.dividing.header Profile
             #settings
                 h4.ui.header Account Settings
-                form(action="/update-profile", method="post")#accountSettings.ui.form
+                form(action="/update-profile-settings", method="post")#accountSettings.ui.form
                     input(type="hidden", name="id", value="#{user.id}")
                     div.seven.wide.field
                         label Name
@@ -18,3 +18,23 @@ block my-page
                         label E-mail
                         input(type="text", name="email", placeholder="E-mail", value="#{user.email}")
                     div#changeAccountSettings.ui.button Change
+        div(style="margin-top: 20px;").ui.container
+            h2.ui.dividing.header Target
+            #targetPosition
+                h4.ui.header Your Target Position
+                form(action="/update-profile-target-position", method="post")#targetPositionForm.ui.form
+                    div.seven.wide.field
+                        label Category
+                        select(name="category")#targetCategories.ui.dropdown
+                            option(value="0") Not selected
+                            each category in categories
+                                option(value="#{category.id}") #{category.name}
+                    div.seven.wide.field
+                        label Level
+                        select(name="level").ui.dropdown
+                            each level in levels
+                                option(value="#{level.id}") #{level.name}
+                    div.seven.wide.field
+                        label Position
+                        select(name="position")#targetPositions.ui.dropdown
+                    div#changeTargetPosition.ui.button Change

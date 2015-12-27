@@ -99,12 +99,19 @@ router.post('/query', function (req, res, next) {
     });
 });
 router.get('/my-page', loggedIn, function (req, res, next) {
-    res.render('my-page', {
-        isAuthenticated: req.isAuthenticated(),
-        user: req.user
+    return models.Category.findAll().then(function (categories) {
+        return models.Level.findAll().then(function (levels) {
+            return res.render('my-page', {
+                title: 'My Profile',
+                isAuthenticated: req.isAuthenticated(),
+                user: req.user,
+                categories: categories,
+                levels: levels
+            });
+        });
     });
 });
-router.post('/update-profile', function (req, res, next) {
+router.post('/update-profile-settings', function (req, res, next) {
     var id = req.body.id
         , name = req.body.name
         , surname = req.body.surname
@@ -116,9 +123,23 @@ router.post('/update-profile', function (req, res, next) {
     }, {
         where: { id: id }
     }).then(function () {
-        res.redirect('/');
+        res.json({ result: "Account settings updated" });
     }).catch(function (err) {
         res.send(err.message);
+    });
+});
+router.post('/update-profile-target-position', function (req, res, next) {
+    return models.PositionsLevel
+        .findOrCreate({ where: { LevelId: req.body.level, PositionId: req.body.position } })
+        .then(function (value) {
+            return res.json({ result: "Target Updated" });
+        });
+});
+router.get('/get-positions/:categoryId', function (req, res, next) {
+    var categoryId = req.params.categoryId;
+
+    return models.Position.findAll({ where: { categoryId: categoryId } }).then(function (values) {
+        return res.json(values);
     });
 });
 
